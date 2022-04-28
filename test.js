@@ -2,6 +2,7 @@ const mysql = require('mysql')
 const express = require('express')
 
 
+
 //create connection
 const db = mysql.createConnection({
     host : 'localhost',
@@ -9,6 +10,8 @@ const db = mysql.createConnection({
     password : 'root',
     database : 'amberapp1'
 })
+
+
 
 //connect
 db.connect((err)=> {
@@ -24,6 +27,8 @@ db.connect((err)=> {
 
 const app = express();
 
+
+
 app.get('/trainers' , (req, res) => {
     let sql = "SELECT * FROM amberapp1.trainers"
     db.query(sql, (err, result) => {
@@ -33,6 +38,18 @@ app.get('/trainers' , (req, res) => {
         })
     }); 
 
+app.get('/students', (req, res) => {
+    let sql = "SELECT * FROM amberapp1.students"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        res.send(result)
+    })
+});
+
+app.get('/', (req, res) => {
+    res.send("the only valid routes are '/students' and '/trainers'")
+})
 //specifying the port 
 const port = 5000
 app.listen(port, () => {
