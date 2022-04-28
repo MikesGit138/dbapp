@@ -13,25 +13,30 @@ const db = mysql.createConnection({
 //connect
 db.connect((err)=> {
     if (err){
-        throw err;
+        console.log('connection failed')
     } else {
         console.log('mysql connected...')
     }
 })
 
+
+//use express to route to the students database
+
 const app = express();
 
-app.get('/students' , (req, res) => {
-    conn.query('SELECT * FROM amberapp1.students', (err, rows, fields) => {
-        if (!err)
-            res.send(rows);
-        else
-            console.log(err);
+app.get('/trainers' , (req, res) => {
+    let sql = "SELECT * FROM amberapp1.trainers"
+    db.query(sql, (err, result) => {
+        if (err) throw err;
+        console.table(result);
+        res.send(result)
         })
     }); 
 
-app.listen('3000', () => {
-    console.log('server started on porter 3000')
+//specifying the port 
+const port = 5000
+app.listen(port, () => {
+    console.log(`server started at ${port}`)
 })
 
 // db.query ('SELECT * FROM amberapp1.students', function (err, results, fields){
